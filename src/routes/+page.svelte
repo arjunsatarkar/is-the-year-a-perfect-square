@@ -2,8 +2,8 @@
     import { DateTime } from "luxon";
 
     const getCurrentYear = () => DateTime.now().year;
-    const getRelative = (year) =>
-        DateTime.local(year).toRelative({ locale: "en" });
+    const getRelative = (year: number) =>
+        DateTime.local(year).toRelative({ locale: "en" })!;
 
     let year = $state(getCurrentYear());
     let sqrt = $derived(year ** 0.5);
@@ -12,12 +12,14 @@
     let nextSqrt = $derived(isPerfectSquare ? sqrt + 1 : Math.ceil(sqrt));
     let last = $derived(lastSqrt ** 2);
     let next = $derived(nextSqrt ** 2);
-    let nextRelative = $state(getRelative(next));
+    let nextRelative: string = $state("");
 
-    setInterval(() => {
+    const update = () => {
         year = getCurrentYear();
         nextRelative = getRelative(next);
-    }, 500);
+    };
+    update();
+    setInterval(update, 500);
 </script>
 
 <div id="container">
