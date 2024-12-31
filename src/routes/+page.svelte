@@ -21,6 +21,7 @@
 </script>
 
 <div id="container">
+    <h1>Is the year a perfect square?</h1>
     {#if isPerfectSquare}
         <div id="answer">Yes.</div>
         <strong>{sqrt}</strong><sup>2</sup> = {year}.
@@ -37,6 +38,11 @@
     #container {
         text-align: center;
         font-size: 2rem;
+    }
+    h1 {
+        font-size: inherit;
+        margin: 0;
+        font-weight: normal;
     }
     #answer {
         font-size: 5em;
