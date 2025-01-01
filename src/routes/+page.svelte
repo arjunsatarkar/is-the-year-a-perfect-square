@@ -1,5 +1,7 @@
 <script lang="ts">
     import { DateTime } from "luxon";
+    import RubySquareYear from "./RubySquareYear.svelte";
+    import Square from "./Square.svelte";
 
     const getCurrentYear = () => DateTime.now().year;
     const getRelative = (year: number) =>
@@ -10,9 +12,8 @@
     let isPerfectSquare = $derived(Number.isInteger(sqrt));
     let lastSqrt = $derived(isPerfectSquare ? sqrt - 1 : Math.floor(sqrt));
     let nextSqrt = $derived(isPerfectSquare ? sqrt + 1 : Math.ceil(sqrt));
-    let last = $derived(lastSqrt ** 2);
     let next = $derived(nextSqrt ** 2);
-    let nextRelative: string = $state("");
+    let nextRelative = $state("");
 
     const update = () => {
         year = getCurrentYear();
@@ -22,22 +23,25 @@
     setInterval(update, 500);
 </script>
 
-<div id="container">
+<div id="mainDisplay">
     <h1>Is the year a perfect square?</h1>
     {#if isPerfectSquare}
         <div id="answer">Yes.</div>
-        <strong>{sqrt}</strong><sup>2</sup> = {year}.
+        <strong>{sqrt}</strong><Square /> = {year}.
     {:else}
         <div id="answer">No.</div>
     {/if}
     The last was
-    <ruby>{last}<rp> (</rp><rt>{lastSqrt}<sup>2</sup></rt><rp>)</rp></ruby>, and
-    the next is
-    <ruby>{next}<rp> (</rp><rt>{nextSqrt}<sup>2</sup></rt><rp>)</rp></ruby>, {nextRelative}!
+    <RubySquareYear sqrt={lastSqrt} /> and the next is
+    <RubySquareYear sqrt={nextSqrt} />, {nextRelative}!
+</div>
+
+<div id="sourceLinkContainer">
+    <a href="https://github.com/arjunsatarkar/is-the-year-a-perfect-square">source code</a>
 </div>
 
 <style>
-    #container {
+    #mainDisplay {
         text-align: center;
         font-size: 2rem;
     }
@@ -51,5 +55,8 @@
         margin: 0;
         font-weight: bold;
         font-family: sans-serif;
+    }
+    #sourceLinkContainer {
+        text-align: right;
     }
 </style>
